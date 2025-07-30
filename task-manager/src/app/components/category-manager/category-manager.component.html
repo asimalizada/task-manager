@@ -1,0 +1,7 @@
+<h4>Add New Category</h4>
+<input [(ngModel)]="newCategory" placeholder="New category">
+<button (click)="addCategory()">Add</button>
+
+<ul>
+  <li *ngFor="let c of categories">{{ c.name }}</li>
+</ul>

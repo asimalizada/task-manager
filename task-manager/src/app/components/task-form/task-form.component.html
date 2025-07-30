@@ -1,0 +1,19 @@
+<form (ngSubmit)="submitForm()" #taskForm="ngForm">
+  <input type="text" [(ngModel)]="task.title" name="title" required placeholder="Task Title">
+  <textarea [(ngModel)]="task.description" name="description" placeholder="Description"></textarea>
+
+  <select [(ngModel)]="task.category" name="category">
+    <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
+  </select>
+
+  <select [(ngModel)]="task.priority" name="priority">
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+  </select>
+
+  <input type="date" [(ngModel)]="task.dueDate" name="dueDate" required>
+  <input type="datetime-local" [(ngModel)]="task.remindAt" name="remindAt">
+
+  <button type="submit">Add Task</button>
+</form>

@@ -1,0 +1,10 @@
+<div *ngFor="let task of tasks">
+  <div [style.textDecoration]="task.isCompleted ? 'line-through' : 'none'">
+    <h3>{{ task.title }}</h3>
+    <p>{{ task.description }}</p>
+    <small>📅 Due: {{ task.dueDate }} | 🔔 {{ task.remindAt || '—' }}</small>
+    <p>Priority: {{ task.priority }} | Category: {{ task.category }}</p>
+  </div>
+  <button (click)="toggleComplete(task)">✔</button>
+  <button (click)="delete(task.id)">🗑</button>
+</div>
