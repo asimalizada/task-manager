@@ -3,8 +3,9 @@ export interface Task {
   title: string;
   description: string;
   category: string;
+  type: string;
   priority: 'Low' | 'Medium' | 'High';
-  dueDate: Date;
-  remindAt?: Date;
+  dueDate: string;
+  remindAt?: string;
   isCompleted: boolean;
 }

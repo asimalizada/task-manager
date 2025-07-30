@@ -1,19 +1,27 @@
-<form (ngSubmit)="submitForm()" #taskForm="ngForm">
-  <input type="text" [(ngModel)]="task.title" name="title" required placeholder="Task Title">
+<form (ngSubmit)="submitForm()" class="form">
+  <input [(ngModel)]="task.title" name="title" required placeholder="Task Title" />
+
   <textarea [(ngModel)]="task.description" name="description" placeholder="Description"></textarea>
 
-  <select [(ngModel)]="task.category" name="category">
+  <select [(ngModel)]="task.category" name="category" (change)="onCategoryChange()">
+    <option value="">-- Select Category --</option>
     <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
   </select>
 
-  <select [(ngModel)]="task.priority" name="priority">
-    <option>Low</option>
-    <option>Medium</option>
-    <option>High</option>
+  <select [(ngModel)]="task.type" name="type" [disabled]="!selectedTypes.length">
+    <option value="">-- Select Type --</option>
+    <option *ngFor="let t of selectedTypes" [value]="t">{{ t }}</option>
   </select>
 
-  <input type="date" [(ngModel)]="task.dueDate" name="dueDate" required>
-  <input type="datetime-local" [(ngModel)]="task.remindAt" name="remindAt">
+  <select [(ngModel)]="task.priority" name="priority">
+    <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+  </select>
 
-  <button type="submit">Add Task</button>
+  <label>Due Date:</label>
+  <input type="date" [(ngModel)]="task.dueDate" name="dueDate" required />
+
+  <label>Reminder:</label>
+  <input type="datetime-local" [(ngModel)]="task.remindAt" name="remindAt" />
+
+  <button type="submit">Create Task</button>
 </form>

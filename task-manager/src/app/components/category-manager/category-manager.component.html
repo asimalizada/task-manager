@@ -1,7 +1,28 @@
-<h4>Add New Category</h4>
-<input [(ngModel)]="newCategory" placeholder="New category">
-<button (click)="addCategory()">Add</button>
+<div class="modal-backdrop">
+  <div class="modal-window">
+    <h2>Manage Categories</h2>
 
-<ul>
-  <li *ngFor="let c of categories">{{ c.name }}</li>
-</ul>
+    <div class="category-section">
+      <label>New Category</label>
+      <input [(ngModel)]="newCategory" placeholder="Category name" />
+      <button (click)="addCategory()">Add Category</button>
+    </div>
+
+    <hr />
+
+    <div *ngFor="let cat of categories" class="category-box" (click)="selectCategory(cat)">
+      <strong>{{ cat.name }}</strong>
+      <div *ngIf="cat && cat.types.length > 0">
+        <small>Types: {{ cat.types.join(', ') }}</small>
+      </div>
+    </div>
+
+    <div *ngIf="selectedCategory" class="type-form">
+      <h4>Add Type to {{ selectedCategory.name }}</h4>
+      <input [(ngModel)]="newType" placeholder="Type name" />
+      <button (click)="addTypeToSelected()">Add Type</button>
+    </div>
+
+    <button class="close-btn" (click)="close.emit()">Close</button>
+  </div>
+</div>

@@ -1,6 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task';
 import { Category } from '../../models/category';
 
@@ -9,26 +10,55 @@ import { Category } from '../../models/category';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './task-form.component.html',
-  styleUrl: './task-form.component.scss'
+  styleUrls: ['./task-form.component.scss']
 })
 export class TaskFormComponent {
-  task: Task;
-  categories: Category[] = [];
+  @Output() taskCreated = new EventEmitter<void>();
 
-  constructor() {
-    this.task = {
-      title: '',
-      description: '',
-      dueDate: new Date(),
-      category: '',
-      id: 0,
-      isCompleted: false,
-      priority: 'Medium',
-      remindAt: undefined
-    }
+  task: Task = {
+    id: Date.now(),
+    title: '',
+    description: '',
+    category: '',
+    type: '',
+    priority: 'Medium',
+    dueDate: '',
+    remindAt: '',
+    isCompleted: false,
+  };
+
+  categories: Category[] = [];
+  selectedTypes: string[] = [];
+  priorities = ['Low', 'Medium', 'High', 'Urgent'];
+
+  constructor(private taskService: TaskService) {
+    this.taskService.getCategories().subscribe(data => {
+      this.categories = data;
+    });
+  }
+
+  onCategoryChange() {
+    const found = this.categories.find(cat => cat.name === this.task.category);
+    this.selectedTypes = found?.types || [];
+    this.task.type = '';
   }
 
   submitForm() {
-    
+    if (!this.task.title || !this.task.dueDate) return;
+    this.task.id = Date.now();
+    this.taskService.addTask(this.task);
+    this.task = {
+      id: Date.now(),
+      title: '',
+      description: '',
+      category: '',
+      type: '',
+      priority: 'Medium',
+      dueDate: '',
+      remindAt: '',
+      isCompleted: false,
+    };
+    this.selectedTypes = [];
+    this.taskCreated.emit();
   }
 }

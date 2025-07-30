@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class TaskService {
   private tasks$ = new BehaviorSubject<Task[]>([]);
   private categories$ = new BehaviorSubject<Category[]>([
-    { id: 1, name: 'General' }
+    { id: 1, name: 'General', types: [] },
   ]);
 
   constructor() {
@@ -32,19 +32,34 @@ export class TaskService {
   }
 
   updateTask(task: Task) {
-    const updated = this.tasks$.value.map(t => t.id === task.id ? task : t);
+    const updated = this.tasks$.value.map((t) => (t.id === task.id ? task : t));
     this.tasks$.next(updated);
     localStorage.setItem('tasks', JSON.stringify(updated));
   }
 
   deleteTask(id: number) {
-    const updated = this.tasks$.value.filter(t => t.id !== id);
+    const updated = this.tasks$.value.filter((t) => t.id !== id);
     this.tasks$.next(updated);
     localStorage.setItem('tasks', JSON.stringify(updated));
   }
 
-  addCategory(name: string) {
-    const updated = [...this.categories$.value, { id: Date.now(), name }];
+  addCategory(name: string, types: string[] = []) {
+    const updated = [
+      ...this.categories$.value,
+      { id: Date.now(), name, types },
+    ];
+    this.categories$.next(updated);
+    localStorage.setItem('categories', JSON.stringify(updated));
+  }
+
+  addTypeToCategory(categoryName: string, newType: string) {
+    const updated = this.categories$.value.map((cat) => {
+      if (cat.name === categoryName && !cat.types.includes(newType)) {
+        return { ...cat, types: [...cat.types, newType] };
+      }
+      return cat;
+    });
+
     this.categories$.next(updated);
     localStorage.setItem('categories', JSON.stringify(updated));
   }
