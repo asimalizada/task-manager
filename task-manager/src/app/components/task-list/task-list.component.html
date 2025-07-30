@@ -1,23 +1,24 @@
 <div class="task-list">
   <div *ngFor="let task of filteredTasks()" class="task-card" [class.completed]="task.isCompleted">
-    <div class="title-row">
+    <div class="card-left">
       <h4>{{ task.title }}</h4>
+      <p *ngIf="task.description">{{ task.description }}</p>
+    </div>
+
+    <div class="card-meta">
+      <span>📁 {{ task.category }} / {{ task.type }}</span>
+      <span>📅 {{ task.dueDate }} <span *ngIf="isToday(task.dueDate)"> (Today)</span></span>
+      <span *ngIf="task.remindAt">🔔 {{ task.remindAt }}</span>
+    </div>
+
+    <div class="card-right">
       <span class="priority" [ngClass]="task.priority.toLowerCase()">{{ task.priority }}</span>
-    </div>
-
-    <p *ngIf="task.description">{{ task.description }}</p>
-
-    <div class="meta">
-      <span>📁 {{ task.category }} / {{ task.type }}</span><br />
-      <span>🗓️ Due: {{ task.dueDate }} <span *ngIf="isToday(task.dueDate)"> (Today)</span></span><br />
-      <span *ngIf="task.remindAt">🔔 Reminder: {{ task.remindAt }}</span>
-    </div>
-
-    <div class="actions">
-      <button (click)="toggleComplete(task)">
-        {{ task.isCompleted ? 'Undo' : 'Complete' }}
-      </button>
-      <button class="delete" (click)="deleteTask(task.id)">🗑</button>
+      <div class="actions">
+        <button (click)="toggleComplete(task)">
+          {{ task.isCompleted ? 'Undo' : 'Complete' }}
+        </button>
+        <button class="delete" (click)="deleteTask(task.id)">🗑</button>
+      </div>
     </div>
   </div>
 </div>

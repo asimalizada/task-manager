@@ -5,12 +5,21 @@
 <div class="dashboard">
   <div class="sidebar">
     <h3>Categories</h3>
-    <ul>
-      <li *ngFor="let cat of categories" (click)="selectCategory(cat.name)">
-        {{ cat.name }}
+    <ul class="category-list">
+      <li (click)="selectCategory(null)" [class.active]="!selectedCategory" class="category-item">
+        <span>All</span>
+      </li>
+
+      <hr>
+
+      <li *ngFor="let cat of categories" class="category-item" [class.active]="selectedCategory === cat.name" (click)="selectCategory(cat.name)">
+        <span>
+          {{ cat.name }}
+        </span>
+        <button (click)="deleteCategory(cat.name)" class="delete-cat">🗑</button>
       </li>
     </ul>
-    <button (click)="openCategoryModal()">➕ Add Category</button>
+    <button class="add-category-btn" (click)="openCategoryModal()">➕ Add Category</button>
   </div>
 
   <div class="main">
@@ -18,10 +27,19 @@
     <app-task-list [filter]="selectedCategory"></app-task-list>
   </div>
 
-  <div class="form-area">
-    <h3>Add Task</h3>
-    <app-task-form (taskCreated)="refreshTasks()"></app-task-form>
+  <!-- Floating Add Task Button -->
+  <button class="open-drawer-btn" (click)="showDrawer = true">➕ Add Task</button>
+
+  <!-- Slide-in Drawer -->
+  <div class="drawer" [class.open]="showDrawer">
+    <div class="drawer-header">
+      <h3>Add Task</h3>
+      <button (click)="showDrawer = false">✖</button>
+    </div>
+
+    <app-task-form (taskCreated)="onTaskCreated()" (closeDrawer)="showDrawer = false"></app-task-form>
   </div>
+
 
   <!-- Modal -->
   <app-category-manager *ngIf="showCategoryModal" (close)="closeCategoryModal()"></app-category-manager>

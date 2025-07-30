@@ -13,8 +13,20 @@ export class TaskService {
   constructor() {
     const savedTasks = localStorage.getItem('tasks');
     const savedCats = localStorage.getItem('categories');
-    if (savedTasks) this.tasks$.next(JSON.parse(savedTasks));
-    if (savedCats) this.categories$.next(JSON.parse(savedCats));
+
+    if (savedTasks) {
+      this.tasks$.next(JSON.parse(savedTasks));
+    }
+
+    if (savedCats) {
+      const parsed = JSON.parse(savedCats);
+      this.categories$.next(
+        parsed.map((c: any) => ({
+          ...c,
+          types: c.types || [],
+        }))
+      );
+    }
   }
 
   getTasks() {
@@ -62,5 +74,15 @@ export class TaskService {
 
     this.categories$.next(updated);
     localStorage.setItem('categories', JSON.stringify(updated));
+  }
+
+  deleteCategory(name: string) {
+    const categories = this.getCategoriesSync().filter((c) => c.name !== name);
+    localStorage.setItem('categories', JSON.stringify(categories));
+    this.categories$.next(categories);
+  }
+
+  getCategoriesSync(): Category[] {
+    return JSON.parse(localStorage.getItem('categories') || '[]');
   }
 }

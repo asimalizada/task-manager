@@ -9,11 +9,11 @@
   button {
     padding: 0.5rem;
     border-radius: 6px;
-    border: 1px solid var(--border); // 👈 use variable
+    border: 1px solid var(--border);
     font-size: 14px;
     font-family: inherit;
-    background-color: var(--card);   // 👈 use variable
-    color: var(--text);              // 👈 use variable
+    background-color: var(--card);
+    color: var(--text);
   }
 
   textarea {
@@ -23,11 +23,11 @@
   label {
     font-size: 13px;
     font-weight: bold;
-    color: var(--text);              // 👈 ensure label uses text color
+    color: var(--text);
   }
 
   button {
-    background: var(--accent);       // 👈 use accent
+    background: var(--accent);
     color: white;
     border: none;
     cursor: pointer;
@@ -36,5 +36,43 @@
     &:hover {
       filter: brightness(0.9);
     }
+  }
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toggle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  background: var(--card);
+  color: var(--text);
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid var(--border);
+  transition: background 0.2s ease;
+
+  span {
+    transition: transform 0.3s ease;
+  }
+
+  .rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.collapsible-form {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+
+  &.expanded {
+    max-height: 1200px; // enough height for full form
+    margin-top: 1rem;
   }
 }

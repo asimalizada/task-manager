@@ -1,19 +1,19 @@
-<form (ngSubmit)="submitForm()" class="form">
+<form #form="ngForm" (ngSubmit)="submitForm()" class="form">
   <input [(ngModel)]="task.title" name="title" required placeholder="Task Title" />
 
   <textarea [(ngModel)]="task.description" name="description" placeholder="Description"></textarea>
 
-  <select [(ngModel)]="task.category" name="category" (change)="onCategoryChange()">
+  <select [(ngModel)]="task.category" name="category" required (change)="onCategoryChange()">
     <option value="">-- Select Category --</option>
     <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
   </select>
 
-  <select [(ngModel)]="task.type" name="type" [disabled]="!selectedTypes.length">
+  <select [(ngModel)]="task.type" name="type" required [disabled]="!selectedTypes.length">
     <option value="">-- Select Type --</option>
     <option *ngFor="let t of selectedTypes" [value]="t">{{ t }}</option>
   </select>
 
-  <select [(ngModel)]="task.priority" name="priority">
+  <select [(ngModel)]="task.priority" name="priority" required>
     <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
   </select>
 
@@ -23,5 +23,7 @@
   <label>Reminder:</label>
   <input type="datetime-local" [(ngModel)]="task.remindAt" name="remindAt" />
 
-  <button type="submit">Create Task</button>
+  <button type="submit" [disabled]="form.invalid">
+    Create Task
+  </button>
 </form>

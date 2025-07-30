@@ -10,18 +10,27 @@ import { DarkModeService } from '../../services/dark-mode.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, TaskFormComponent, TaskListComponent, CategoryManagerComponent],
+  imports: [
+    CommonModule,
+    TaskFormComponent,
+    TaskListComponent,
+    CategoryManagerComponent,
+  ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
   showCategoryModal = false;
   categories: Category[] = [];
   selectedCategory: string | null = null;
-  
-  constructor(private taskService: TaskService, private darkService: DarkModeService) {
-    effect(() => {
-      this.taskService.getCategories().subscribe(data => this.categories = data);
+  showDrawer = false;
+
+  constructor(
+    private taskService: TaskService,
+    private darkService: DarkModeService
+  ) {
+    this.taskService.getCategories().subscribe((data) => {
+      this.categories = data;
     });
   }
 
@@ -33,7 +42,7 @@ export class DashboardComponent {
     this.showCategoryModal = false;
   }
 
-  selectCategory(name: string) {
+  selectCategory(name: string | null) {
     this.selectedCategory = name;
   }
 
@@ -43,5 +52,20 @@ export class DashboardComponent {
 
   toggleDark() {
     this.darkService.toggleDarkMode();
+  }
+
+  onTaskCreated() {
+    this.refreshTasks();
+    this.showDrawer = false;
+  }
+
+  deleteCategory(name: string) {
+    if (confirm(`Delete category "${name}"? This will not delete tasks.`)) {
+      this.taskService.deleteCategory(name);
+      this.categories = this.categories.filter((c) => c.name !== name);
+      if (this.selectedCategory === name) {
+        this.selectedCategory = null;
+      }
+    }
   }
 }

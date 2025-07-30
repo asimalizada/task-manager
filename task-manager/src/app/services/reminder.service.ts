@@ -8,7 +8,7 @@ export class ReminderService {
 
   constructor(private taskService: TaskService) {
     this.requestPermission();
-    setInterval(() => this.checkReminders(), 60_000); // every 60 sec
+    setInterval(() => this.checkReminders(), 60_000);
   }
 
   private requestPermission() {
@@ -38,7 +38,7 @@ export class ReminderService {
   private sendNotification(task: Task) {
     new Notification(`🔔 Reminder: ${task.title}`, {
       body: task.description || 'You have a task due soon!',
-      icon: '/assets/notify.png' // optional: add an icon
+      icon: '/assets/notify.png'
     });
   }
 }

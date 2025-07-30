@@ -1,4 +1,4 @@
-import { Component, Input, computed, effect, signal } from '@angular/core';
+import { Component, Input, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task';
@@ -8,22 +8,28 @@ import { Task } from '../../models/task';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.scss']
+  styleUrls: ['./task-list.component.scss'],
 })
 export class TaskListComponent {
-  @Input({ required: false }) filter: string | null = null;
+  private _filter = signal<string | null>(null);
+
+  @Input()
+  set filter(value: string | null) {
+    this._filter.set(value);
+  }
   tasks = signal<Task[]>([]);
   now = new Date();
 
   constructor(private taskService: TaskService) {
-    effect(() => {
-      this.taskService.getTasks().subscribe(data => this.tasks.set(data));
+    this.taskService.getTasks().subscribe((data) => {
+      this.tasks.set(data);
     });
   }
 
   filteredTasks = computed(() => {
-    return this.tasks().filter(task =>
-      !this.filter || task.category === this.filter
+    const currentFilter = this._filter();
+    return this.tasks().filter(
+      (task) => !currentFilter || task.category === currentFilter
     );
   });
 
