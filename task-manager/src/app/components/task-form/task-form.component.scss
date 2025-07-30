@@ -3,12 +3,17 @@
   flex-direction: column;
   gap: 0.75rem;
 
-  input, select, textarea, button {
+  input,
+  select,
+  textarea,
+  button {
     padding: 0.5rem;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border); // 👈 use variable
     font-size: 14px;
     font-family: inherit;
+    background-color: var(--card);   // 👈 use variable
+    color: var(--text);              // 👈 use variable
   }
 
   textarea {
@@ -18,17 +23,18 @@
   label {
     font-size: 13px;
     font-weight: bold;
+    color: var(--text);              // 👈 ensure label uses text color
   }
 
   button {
-    background: #1677ff;
+    background: var(--accent);       // 👈 use accent
     color: white;
     border: none;
     cursor: pointer;
     transition: 0.3s ease;
 
     &:hover {
-      background: #0059d6;
+      filter: brightness(0.9);
     }
   }
 }

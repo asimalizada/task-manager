@@ -5,6 +5,7 @@ import { CategoryManagerComponent } from '../../components/category-manager/cate
 import { Category } from '../../models/category';
 import { TaskService } from '../../services/task.service';
 import { CommonModule } from '@angular/common';
+import { DarkModeService } from '../../services/dark-mode.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,7 @@ export class DashboardComponent {
   categories: Category[] = [];
   selectedCategory: string | null = null;
   
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService, private darkService: DarkModeService) {
     effect(() => {
       this.taskService.getCategories().subscribe(data => this.categories = data);
     });
@@ -38,5 +39,9 @@ export class DashboardComponent {
 
   refreshTasks() {
     // no-op for now, will trigger if needed in list
+  }
+
+  toggleDark() {
+    this.darkService.toggleDarkMode();
   }
 }

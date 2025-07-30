@@ -4,11 +4,12 @@
   height: 100vh;
   gap: 1rem;
   padding: 1rem;
-  background: #f9f9f9;
+  background: var(--bg); // ✅ use variable
   font-family: Arial, sans-serif;
 
   .sidebar {
-    background: white;
+    background: var(--card); // ✅ use variable
+    color: var(--text);
     border-radius: 8px;
     padding: 1rem;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -26,19 +27,33 @@
         padding: 6px 8px;
         border-radius: 4px;
         cursor: pointer;
+        color: var(--text);
         &:hover {
-          background: #eee;
+          background: var(--accent);
+          color: white;
         }
       }
     }
 
     button {
       width: 100%;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s ease;
+
+      &:hover {
+        filter: brightness(0.9);
+      }
     }
   }
 
   .main {
-    background: white;
+    background: var(--card); // ✅ use variable
+    color: var(--text);
     border-radius: 8px;
     padding: 1rem;
     overflow-y: auto;
@@ -46,9 +61,31 @@
   }
 
   .form-area {
-    background: white;
+    background: var(--card); // ✅ use variable
+    color: var(--text);
     border-radius: 8px;
     padding: 1rem;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  button {
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: var(--accent);
+    color: white;
+    border: none;
+    transition: 0.2s ease;
+
+    &:hover {
+      filter: brightness(0.9);
+    }
   }
 }
